@@ -2,9 +2,9 @@ package org.jboss.resteasy.core;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+import java.util.function.Supplier;
 
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.core.UriInfo;
