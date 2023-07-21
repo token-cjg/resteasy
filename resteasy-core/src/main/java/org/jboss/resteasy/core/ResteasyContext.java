@@ -3,6 +3,8 @@ package org.jboss.resteasy.core;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.core.UriInfo;
@@ -21,8 +23,24 @@ public final class ResteasyContext {
 
     private static final int maxForwards = 20;
 
-    public static <T> void pushContext(Class<T> type, T data) {
-        getContextDataMap().put(type, data);
+    public static <T> Future<Void> pushContext(Class<T> type, T data) {
+        return new CompletableFuture<Void>().thenApply(v -> {
+            var retries = 0;
+            getContextDataMap().put(type, data);
+            // wait for contextualData to have the data in the map
+            while (getContextData(type) == null) {
+                if (retries++ > 2000) {
+                    // fail if no success after 2 seconds
+                    throw new RuntimeException("Failed to push context data");
+                }
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return null;
+        });
     }
 
     public static void pushContextDataMap(Map<Class<?>, Object> map) {
