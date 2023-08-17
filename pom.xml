@@ -12,7 +12,7 @@
     <name>RESTEasy</name>
     <description>Resteasy</description>
 
-    <groupId>org.jboss.resteasy</groupId>
+    <groupId>com.spinningcatstudios.resteasy</groupId>
     <artifactId>resteasy-jaxrs-all</artifactId>
     <version>6.3.0.Alpha1-SNAPSHOT</version>
     <packaging>pom</packaging>
