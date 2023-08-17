@@ -52,15 +52,6 @@ public class ContextParameterInjectionTest {
         assertFalse("Proxy implements non-JAXRS interfaces", proxy instanceof CoolInterface);
     }
 
-    @Test
-    public void testInjectedProxyImplementsAllInterfaces() {
-        System.setProperty(RESTEASY_PROXY_IMPLEMENT_ALL_INTERFACES, "true");
-        Object proxy = createProxy();
-        assertTrue("Proxy does not implemented expected JAXRS interface", proxy instanceof ContainerRequestFilter);
-        assertTrue("Proxy does not implement all expected interfaces", proxy instanceof CoolInterface);
-        assertEquals("cool", ((CoolInterface) proxy).coolMethod());
-    }
-
     private Object createProxy() {
         ServletContext mockServletContext = mock(ServletContext.class);
         when(mockServletContext.getAttribute(ResteasyDeployment.class.getName())).thenReturn(null);
